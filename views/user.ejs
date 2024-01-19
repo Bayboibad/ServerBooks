@@ -101,13 +101,58 @@
 <div class="row">
     <div class="col-md-12" style="height: 600px;">
         <h5 style="margin-top: 10px;margin-bottom: 10px">Danh sách người dùng</h5>
-        
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+            <tr>
+                <th>STT</th>
+                <th>Image</th>
+                <th>FullName</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>PhoneNumber</th>
+                <th>Address</th>
+                <th>Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <% var stt = 1%>
+            <% dataUser.forEach((user) => { %>
+                <tr style="border-bottom: 1px solid #ccc;">
+                    <td><%= stt %></td>
+                    <td>
+                        <img style="width: 30px;height: 30px;" src="<%= user.image %>">
+                    </td>
+                    <td>
+                        <%= user.fullName %>
+                    </td>
+                    <td>
+                        <%= user.username %>
+                    </td>
+                    <td><%= user.email %></td>
+                    <td> <%= user.phoneNumber %></td>
+                    <td> <%= user.address %></td>
+                    <td>
+                        <button id="buttonDel" type="button" class="btn btn-warning" onclick="confirmDelete(<%= JSON.stringify(user)%>)">Delete</button>
+                    </td>
+                </tr>
+                <% stt++ %>
+            <% }) %>
+            </tbody>
+        </table>
     </div>
 </div>
 
 </body>
 <script>
 
+function confirmDelete(user) {
+        const _id = user._id;
+        var result = confirm("Bạn có chắc muốn xóa người dùng này không?");
+        if (result) {
+            window.location.href = "user/deleteUserOnWeb/?_id=" + _id;
+        }
+    }
     
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
