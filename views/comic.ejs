@@ -692,7 +692,16 @@
         });
 
         const duongKeNgang = document.createElement('div');
-        duongKeNgang.classList.add('duongKeNgang')
+        duongKeNgang.classList.add('duongKeNgang');
+
+        const likeAndCommentDiv = document.createElement('div');
+        likeAndCommentDiv.classList.add('likeAndCommentDiv');
+
+        const commentOfComic = dataComment.filter(com => com.comic === comic._id)
+
+        const commentTotal = document.createElement('button');
+        commentTotal.classList.add('comment-total');
+        commentTotal.textContent = commentOfComic.length + ' bình luận';
         
     
         const textContentImage = document.createElement('div');
@@ -707,10 +716,56 @@
             contentImageDiv.appendChild(imageContent)
         }
 
+
+        const divComment = document.createElement('div')
+        divComment.classList.add('div-comment');
+
+        commentOfComic.forEach((comment) => {
+        const user = dataUser.find(user => user._id === comment.user);
+
+        const commentContainer = document.createElement('div');
+        commentContainer.classList.add('comment-container');
+
+        const userAvatar = document.createElement('img');
+        userAvatar.src = user.image; // Sử dụng đường dẫn ảnh từ user
+        userAvatar.alt = 'User Avatar';
+        userAvatar.classList.add('user-avatar');
+
+        const commentContent = document.createElement('div');
+        commentContent.classList.add('comment-content');
+
+        const commentHeader = document.createElement('div');
+        commentHeader.classList.add('comment-header');
+
+        const userName = document.createElement('span');
+        userName.classList.add('user-name');
+        userName.textContent = user.fullName;
+
+        const commentDate = document.createElement('span');
+        commentDate.classList.add('comment-date');
+        commentDate.textContent = formatTimeAgo(comment.commentDate);
+
+        const commentText = document.createElement('p');
+        commentText.textContent = comment.content;
+
+        commentHeader.appendChild(userName);
+        commentHeader.appendChild(commentDate);
+
+        commentContent.appendChild(commentHeader);
+        commentContent.appendChild(commentText);
+
+        commentContainer.appendChild(userAvatar);
+        commentContainer.appendChild(commentContent);
+
+        divComment.appendChild(commentContainer);
+        });
+
         content.appendChild(name);
         content.appendChild(author);
         content.appendChild(publicationYear);
         
+
+        // Thêm các phần tử vào div lớn
 
         headWrapper.appendChild(closeButton)
         headWrapper.appendChild(textTitleHead)
@@ -719,7 +774,9 @@
 
         buttons.appendChild(deleteButton)
         buttons.appendChild(updateButton)
+        likeAndCommentDiv.appendChild(commentTotal)
 
+        // Thêm div lớn vào dialog
         alertDialog.appendChild(headWrapper);
         alertDialog.appendChild(contentWrapper);
         alertDialog.appendChild(detailBook);
@@ -728,7 +785,8 @@
         
         alertDialog.appendChild(buttons);
         alertDialog.appendChild(duongKeNgang);
-
+        alertDialog.appendChild(likeAndCommentDiv);
+        alertDialog.appendChild(divComment);
 
 
         document.body.appendChild(alertDialog);
