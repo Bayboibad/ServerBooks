@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('serverbooks:server');
 var http = require('http');
+const socketapi = require('../socket_server');
+
 
 /**
  * Get port from environment and store in Express.
@@ -88,3 +90,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+socketapi.io.attach(server);
+
