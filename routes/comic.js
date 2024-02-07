@@ -6,12 +6,9 @@ const author = require("../models/author.model");
 const comment = require("../models/comment.model");
 const user = require("../models/user.model");
 
-
-
 // nhúng con troller
 var comicCtrl = require("../controllers/comic.controller");
-
-
+var commentCtrl = require("../controllers/comment.controller");
 
 // Comic
 router.get("/list", comicCtrl.listComic);
@@ -22,24 +19,27 @@ router.post("/update-comic-in-app", comicCtrl.updateComicInApp);
 router.get("/delete-comic", comicCtrl.deleteComic);
 router.delete("/delete-comic-in-app/:_id", comicCtrl.deleteComicInApp);
 
+// Comment
+router.get("/list-comment", commentCtrl.listComment);
+router.post("/add-comment", commentCtrl.addCommentInApp);
+router.delete("/delete-comment/:_id", commentCtrl.deleteCommentInApp);
+
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   const admin = req.session.admin; // Lấy thông tin người dùng từ session
-  const dataAuthor = await author.find()
-  const dataComic = await comic.find()
-  const dataUser = await user.find()
-  const dataComment = await comment.find()
-
+  const dataAuthor = await author.find();
+  const dataComic = await comic.find();
+  const dataUser = await user.find();
+  const dataComment = await comment.find();
 
   if (admin) {
-    
     //console.log(admin);
     res.render("comic", {
-      dataAuthor:dataAuthor,
-      dataComic:dataComic,
-      dataUser:dataUser,
-      dataComment:dataComment,
-      admin:admin
+      dataAuthor: dataAuthor,
+      dataComic: dataComic,
+      dataUser: dataUser,
+      dataComment: dataComment,
+      admin: admin,
     });
   } else {
     console.log("No librarian in session"); // Kiểm tra thông tin người dùng trong console
