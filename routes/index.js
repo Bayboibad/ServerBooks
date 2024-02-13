@@ -1,25 +1,38 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+const comic = require("../models/comic.model");
+const author = require("../models/author.model");
+const user = require("../models/user.model");
+const comment = require("../models/comment.model");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  const admin = req.session.admin;
-  if(admin){
-    
-    res.render('index', { title: 'Express' });
+router.get("/", async function (req, res, next) {
+  const admin = req.session.admin; // Lấy thông tin người dùng từ session
+  const dataAuthor = await author.find();
+  const dataComic = await comic.find();
+  const dataUser = await user.find();
+  const dataComment = await comment.find();
 
-  }else{
-    console.log('No librarian in session');
-    res.redirect('/');
+  if (admin) {
+    //console.log(admin)
+    res.render("index", {
+      dataAuthor: dataAuthor,
+      dataComic: dataComic,
+      dataUser: dataUser,
+      dataComment: dataComment,
+    });
+  } else {
+    console.log("No librarian in session");
+    res.redirect("/");
   }
 });
 
-router.get('/logout', function(req, res, next) {
-  req.session.destroy(function(err) {
+router.get("/logout", function (req, res, next) {
+  req.session.destroy(function (err) {
     if (err) {
       console.error(err);
     }
-    res.redirect('/');
+    res.redirect("/");
   });
 });
 
